@@ -19,22 +19,22 @@
 
 export default function convertBytesToHuman(bytes) {
   // your solution goes here
-  if (typeof(bytes) !== "number") {
+  if (typeof(bytes) !== "number" || bytes < 0 || isNaN(bytes) || isFinite(bytes) === false) {
     return false;
-  }
+  };
 
-  if (bytes < 0) {
-    return false;
-  }
+  // if (bytes < 0) {
+  //   return false;
+  // }
 
   if (bytes === 0) {
-    return '0 B';
-  }
+    return '0 Bytes';
+  };
 
-  const kbToBytes = 1024;
-
+  const k = 1024;
+  
   const ext = [
-    'B',
+    'Bytes',
     'KB',
     'MB',
     'GB',
@@ -42,12 +42,12 @@ export default function convertBytesToHuman(bytes) {
   ];
 
   const index = Math.floor(
-    Math.log(bytes) / Math.log(kbToBytes),
+    Math.log(bytes) / Math.log(k),
   );
 
-  const rB = parseFloat((bytes / Math.pow(kbToBytes, index)).toFixed(2)).toString()
+  const rB = +(bytes / Math.pow(k, index)).toFixed(2);
 
-  return `${rB.charAt(rB.length -1) === "0" ? rB.slice(0, -1) : rB} ${ext[index]}`;
+  return `${rB} ${ext[index]}`;
 
-}
+};
 

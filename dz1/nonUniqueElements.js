@@ -26,14 +26,16 @@ nonUniqueElements([10, 9, 10, 10, 9, 8]) == [10, 9, 10, 10, 9]
 
 export default function nonUniqueElements(data) {
   // your solution goes here
-  const seen = new Set();
-  const duplicates = new Set();
+
+  const col = new Map();
+  let count = 1;
   data.forEach(item => {
-      if (seen.has(item)) {
-          duplicates.add(item);
-      } else {
-          seen.add(item);
-      }
-    });
-  return data.filter(item => duplicates.has(item));
-}
+    if(col.has(item)) {
+        col.set(item, count + 1)
+    } else {
+        col.set(item, count)
+    };
+  });
+  return data.filter(item => col.get(item) > 1);
+  
+};

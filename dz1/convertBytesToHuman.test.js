@@ -17,12 +17,13 @@ test('Возвращает false для неправильного типа да
   expect(convertBytesToHuman(null)).toBe(false);
   expect(convertBytesToHuman(NaN)).toBe(false);
   expect(convertBytesToHuman(Infinity)).toBe(false);
+  expect(convertBytesToHuman(-Infinity)).toBe(false);
   // ...
 });
 
 test('Возвращает корректное значение для чисел', () => {
-  expect(convertBytesToHuman(5)).toBe('5 Bytes');
-  expect(convertBytesToHuman(0)).toBe('0 Bytes');
+  expect(convertBytesToHuman(5)).toBe('5 B');
+  expect(convertBytesToHuman(0)).toBe('0 B');
   expect(convertBytesToHuman(3355443)).toBe('3.2 MB');
   expect(convertBytesToHuman(1610612736)).toBe('1.5 GB');
   expect(convertBytesToHuman(123123123)).toBe('117.42 MB');

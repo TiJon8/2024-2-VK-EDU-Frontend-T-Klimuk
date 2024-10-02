@@ -23,18 +23,14 @@ export default function convertBytesToHuman(bytes) {
     return false;
   };
 
-  // if (bytes < 0) {
-  //   return false;
-  // }
-
   if (bytes === 0) {
-    return '0 Bytes';
+    return '0 B';
   };
 
   const k = 1024;
   
   const ext = [
-    'Bytes',
+    'B',
     'KB',
     'MB',
     'GB',

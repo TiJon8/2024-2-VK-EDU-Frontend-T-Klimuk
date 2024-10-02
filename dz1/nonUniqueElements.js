@@ -28,14 +28,11 @@ export default function nonUniqueElements(data) {
   // your solution goes here
 
   const col = new Map();
-  let count = 1;
   data.forEach(item => {
-    if(col.has(item)) {
-        col.set(item, count + 1)
-    } else {
-        col.set(item, count)
-    };
+    // гениально просто в 2 строчки :)
+    col[item] ??= 0
+    col[item] += 1
   });
-  return data.filter(item => col.get(item) > 1);
+  return data.filter(item => col[item] > 1);
   
 };

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-
 *,
 *::before,
 *::after {
@@ -12,6 +10,11 @@
 :root {
     --headerColor: #2e2e2e;
     --white-theme: rgb(255, 255, 255);
+
+    --modalInitialMediaHeight: 0;
+    --modalInitialMediaWidth: 0;
+    --modalInitialMediaTopOffset: 0;
+    --modalInitialMediaLeftOffset: 0;
 }
 
 li { 
@@ -37,10 +40,6 @@ body {
     /* max-width: 100vw; */
 }
 
-/* body p {
-    background: #a2a2a2;
-} */
-
 .container {
     position: relative;
     width: 1280px;
@@ -65,6 +64,7 @@ body {
     width: 100%;
     flex: 7%;
     background-color: var(--headerColor);
+    box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.26);
 }
 
 .container .leftSide .header .searchSection {
@@ -159,15 +159,31 @@ body {
 
 .messageP {
     display: flex;
-    justify-content: space-between;
+    gap: .6rem;
     align-items: center;
 }
+
+.messageP .thumbMediaPreview {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 20%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.messageP .thumbMediaPreview img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 
 .messageP p {
     color: #aaa;
     display: -webkit-box;
     -webkit-line-clamp: 1;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     -webkit-box-orient: vertical;
     overflow: hidden;
     padding-right: .2rem;
@@ -224,9 +240,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("https://nanopro-group.ru/wp-content/uploads/2019/04/n1gq9zVXHFyONOfKBaNLWTGZs62hEeyqi7XnDXNaxJWxu_hVUZhpbjAcr_qTxHJHxuY4skI0fYPawAfZqaHe5w-2.jpeg");
+    background: url("https://avatars.mds.yandex.net/i?id=8b6fbdfff73a3b18334cbb4f0357ee84_l-12320521-images-thumbs&n=13");
     background-size: contain;
-    opacity: .06;
+    opacity: .1;
 }
 
 
@@ -306,6 +322,7 @@ body {
 
 .chatWrapper {
     position: relative;
+    bottom: 0;
     padding: 2rem;
     width: 100%;
     min-height: 100%;
@@ -313,6 +330,17 @@ body {
     flex-direction: column;
     justify-content: flex-end;
 }
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* .chatBox:has(.new_Message)::-webkit-scrollbar {
+    display: none;
+} */
+
 
 .chatWrapper.nullMessages::before {
     content: 'Начни общение';
@@ -349,7 +377,37 @@ body {
     width: 100%;
     justify-content: flex-end;
     margin-top: 1.6rem;
+    position: relative;
+    /* margin-top: 0; */
+    /* transform: translateY(8rem); */
+    /* animation: error; */
+    /* top: 10rem; */
+    transition: all .2s ease;
+    /* opacity: 0; */
 }
+
+@keyframes error {
+    0% {
+        /* height: 0px; */
+        top: 7rem;
+    }
+    100% {
+        top: 0rem;
+    }
+}
+
+.container .rightSide .chatBox .message.last {
+    top: 10rem;
+    margin-top: -4rem;
+}
+
+.container .rightSide .chatBox .message.show {
+    top: 0rem;
+    margin-top: 1rem;
+    /* animation: error 1s 1; */
+}
+
+
 
 .container .rightSide .chatBox .message.incoming {
     justify-content: flex-start;
@@ -390,15 +448,16 @@ body {
 }
 
 
-.message .content .img {
-    /* min-height: 30vh; */
-}
+/* .message .content .img {
+    max-height: 30vh;
+} */
 
 
 .message .content .img img {
     display: block;
     height: fit-content;
     max-width: 100%;
+    max-height: 60vh;
     object-fit: cover;
     border-radius: 1.2rem 1.2rem 0 0;
 }
@@ -440,6 +499,7 @@ body {
     justify-content: space-between;
     border-top: .2px solid rgb(200, 200, 200);
     padding: 0 1rem;
+    min-height: 5rem;
 }
 
 .messageInput .input {
@@ -452,8 +512,35 @@ body {
 }
 
 .messageInput .attach {
+    position: relative;
+    width: 3.2rem;
+    height: 3.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background-color 200ms ease;
+    flex-shrink: 0;
+}
+
+.messageInput .attach:hover {
+    background-color: rgba(220, 220, 220, 0.6);
+}
+
+.messageInput .attach:active {
+    background-color: rgb(210, 210, 210);
+}
+
+.messageInput .attach span {
     font-size: 2.4rem;
     color: gray;
+}
+
+.messageInput .attach .attachMedia {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
 }
 
 .messageInput .sendArrow {
@@ -517,29 +604,425 @@ body {
 
 
 
+
+/* модалка */
+
+
+
+
+.contentBlock {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: bisque; */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1.2rem 1.6rem;
+    z-index: 3;
+    opacity: 1;
+    transition: opacity .8s;
+}
+
+.contentBlock.hide {
+    opacity: 0;
+}
+
+.leftSideBlock {
+    min-width: 16%;
+    max-width: 16%;
+    display: flex;
+    align-items: center;
+    /* background-color: #7a7a7a; */
+    align-self: flex-end;
+    padding: .4rem 0;
+}
+
+.contentDataBlock {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.4rem;
+    color: rgb(170, 170, 170);
+}
+
+.textDataBlock {
+    max-width: 60%;
+    background-color: rgba(40, 40, 40, 0.7);
+    padding: .8rem 1.2rem;
+    border-radius: .8rem;
+    font-size: 1.4rem;
+    color: var(--white-theme);
+}
+
+.textDataBlock p {
+    text-align: center;
+    line-height: 1.8rem;
+}
+
+.rightSideBlock {
+    min-width: 16%;
+    max-width: 16%;
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    padding: .4rem 0;
+}
+
+.manipulationStatus {
+    display: flex;
+    height: 2rem;
+    width: 2rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: rgb(170, 170, 170);
+}
+
+.manipulationStatus span {
+    font-size: 2.4rem;
+}
+
+
+
+/* модалка на смартфоны */
+
+
+.modalMedia {
+    display: none;
+}
+
+.modalMedia.removed {
+   opacity: 0;
+}
+
+.modalMedia.visible {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #000000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 10;
+    transition: opacity .2s;
+}
+
+/* .modalImg .modalImgWrapper {
+    position: fixed;
+} */
+
+.modalMedia .modalMedia_Header.visible {
+    opacity: 1;
+    top: 0;
+}
+
+.modalMedia .modalMedia_Header .modalHeader_left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.modalMedia .modalMedia_Header .modalHeader_left .modalMedia_Header_back {
+    display: flex;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    transition: all 140ms ease;
+}
+
+.modalMedia .modalMedia_Header .modalHeader_left .modalMedia_Header_back:active {
+    background-color: rgb(110 110 110 / 80%);
+}
+
+.modalMedia .modalMedia_Header .modalHeader_left .modalMedia_Header_back span {
+    font-size: 2rem;
+}
+
+.modalMedia .modalMedia_Header .modalHeader_left .modalMedia_Header_chatData {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+
+.modalMedia .modalMedia_Header .modalHeader_left .modalMedia_Header_chatData .modalMedia_Header_chatData_name {
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+.modalMedia .modalMedia_Header .modalHeader_left .modalMedia_Header_chatData .modalMedia_Header_chatData_date {
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: rgb(230, 230, 230);
+}
+.modalMedia .modalMedia_Header .modalMedia_Header_right {
+    display: flex;
+    height: 2.8rem;
+    align-items: center;
+    gap: 1rem;
+}
+
+.modalMedia .modalMedia_Header .modalMedia_Header_right span {
+    font-size: 1.8rem;
+    border-radius: 50%;
+}
+
+.modalMedia .modalMedia_Header .modalMedia_Header_right span:active {
+    background-color: rgb(110 110 110 / 80%);
+}
+
+.modalMedia .modalMedia_Header {
+    position: fixed;
+    top: -4rem;
+    display: flex;
+    color: #fff;
+    width: 100%;
+    padding: .6rem 1rem;
+    font-size: 1.4rem;
+    justify-content: space-between;
+    z-index: 4;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 200ms ease, top 200ms ease;
+}
+
+.modalMedia .modalMedia_content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 3;
+    position: absolute;
+}
+
+.modalMedia .modalMedia_content .img_wrapper {
+    width: 100%;
+    max-height: 100%;
+}
+
+
+.modalMedia .modalMedia_content .img_wrapper img.desktop {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.modalMedia .modalMedia_content .img_wrapper img.mobile {
+    display: block;
+    position: absolute;
+    height: var(--modalInitialMediaHeight);
+    width: var(--modalInitialMediaWidth);
+    top: var(--modalInitialMediaTopOffset);
+    left: var(--modalInitialMediaLeftOffset);
+    object-fit: contain;
+    transition: all 180ms ease-out;
+}
+
+.modalMedia .modalMedia_content .img_wrapper img.initial {
+    /* position: static; */
+    width: 100%;
+    height: 100%;
+}
+
+.modalMedia .modalMedia_text {
+    position: fixed;
+    bottom: -4rem;
+    color: #fff;
+    width: 100%;
+    padding: 1rem 1.4rem 1.6rem;
+    background-color: #00000080;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 200ms ease, bottom 200ms ease;
+}
+
+.modalMedia .modalMedia_text.visible {
+    /* position: fixed;
+    bottom: 0;
+    color: #fff;
+    width: 100%;
+    padding: 1rem 1.4rem 1.6rem;
+    background-color: #00000080;
+    z-index: 4; */
+    opacity: 1;
+    bottom: 0;
+}
+
+.modalMedia .modalMedia_text p {
+    font-size: 1.4rem;
+}
+
+
+
+/* добавление фоток */
+
+
+
+.outerAttachMediaContainer {
+    position: absolute;
+    /* background-color: rgba(0, 0, 0, .1); */
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+
+.attachMediaModalContainer.removed {
+    opacity: 0;
+}
+
+.attachMediaModalContainer {
+    position: absolute;
+    /* background-color: rgba(0, 0, 0, .1); */
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    transition: opacity 280ms ease;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: showDarkAttachMediaModal 200ms ease 1 forwards;
+}
+
+.attachMediaModalContainer .mediaModalWrapper {
+    height: 60%;
+    /* width: 60%; */
+    background-color: #f6f6f6;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0px 0px 10px -4px rgba(34, 60, 80, 0.2);
+    border-radius: 6%;
+    transform: translateY(60rem);
+    animation: showAttachMediaModal 300ms ease 1 forwards;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.2rem 1rem;
+    gap: 1rem;
+    position: relative;
+    z-index: 6;
+    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+}
+
+.attachMediaModalContainer .mediaModalWrapper .imgWrapper {
+    width: 80%;
+    aspect-ratio: 1 / 1;
+    background-color: #444444;
+    border-radius: 4%;
+    overflow: hidden;
+}
+
+.attachMediaModalContainer .mediaModalWrapper .imgWrapper img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.attachMediaModalContainer .mediaModalWrapper .inputField {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    height: 4.2rem;
+}
+
+.attachMediaModalContainer .mediaModalWrapper .inputField input {
+    flex: 1;
+    border: none;
+    padding: .6rem .8rem;
+    font-size: 1.6rem;
+    flex: 60%;
+    height: 100%;
+    background-color: #f6f6f6;
+}
+
+.attachMediaModalContainer .mediaModalWrapper .inputField button {
+    border: none;
+    flex: 40%;
+    height: 100%;
+    background-color: #5bb2e8;
+    border-radius: 1rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #f6f6f6;
+}
+
+
+
+@keyframes showAttachMediaModal {
+    0% {
+        transform: translateY(60rem);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes showDarkAttachMediaModal {
+    0% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+    100% {
+        background-color: rgba(0, 0, 0, .1);
+    }
+}
+
+
+
+
+
+
+/* медиа */
+
+
 @media screen and (max-width: 425px) {
     .container {
         overflow-x: clip;
+        transition: transform 1s ease;
     }
 
     .container .leftSide {
         z-index: 5;
-        flex: 100%;
+        /* flex: 100%; */
+        min-width: 100%;
         flex-shrink: 0;
     }
 
+    .messageP {
+        gap: .4rem;
+    }
+
     .container .rightSide {
-        flex: 0%;
-        z-index: 0;
+        /* flex: 100%; */
+        position: absolute;
+        width: 100%;
+        z-index: 5;
+        transform: translateX(100%);
+        opacity: 0;
+        transition: transform 300ms ease-in-out, opacity 280ms ease;
     }
     
     .container .rightSide.active {
-        display: flex;
-        flex: 100%;
-        flex-shrink: 0;
-        position: absolute;
+        /* display: flex; */
+        /* flex: 100%; */
+        /* flex-shrink: 0; */
+        /* position: absolute; */
+        opacity: 1;
         width: 100%;
         z-index: 10;
+        transform: translateX(0);
+    }
+
+    .container .leftSide .chatList .block {
+        border-bottom: .01rem solid #cfcfcf70;
     }
 
     .container .rightSide:has(.active) .leftSide {
@@ -554,22 +1037,77 @@ body {
         max-width: 80%;
     }
 
+    .message .content .img img {
+        max-height: 50vh;
+    }
+
     .container .rightSide .chatBox .message .content:has(.img) .img_subData p {
         padding: .2rem .2rem;
     }
 
     .container .rightSide .header .imgText {
-        margin-left: 1.2rem;
+        margin-left: .6rem;
     }
 
-    .container .rightSide .header .imgText span {
+    /* .container .rightSide .header .imgText > span:active {
+        background-color: aqua;
+    } */
+
+    .container .rightSide .header .imgText .backArrow {
+        width: 3.4rem;
+        height: 3.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        transition: all 140ms ease;
+    }
+
+
+    .container .rightSide .header .imgText .backArrow span {
         font-size: 2rem;
         color: aliceblue;
     }
 
+    .container .rightSide .header .imgText .backArrow:active {
+        background-color: rgb(110 110 110 / 80%);
+    }
+
 
     .container .rightSide .header .imgText .img {
-        margin-left: .6rem;
+        margin-left: 0rem;
+    }
+
+    .modalMedia .modalMedia_content .img_wrapper {
+        max-height: 82%;
+    }
+
+    .attachMediaModalContainer {
+        z-index: 10;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper {
+        height: auto;
+        width: 88%;
+        aspect-ratio: 1 / 1;
+        gap: .6rem;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper .imgWrapper {
+        width: 100%;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper .inputField {
+        gap: .6rem;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper .inputField input {
+        padding: .4rem .6rem;
+        font-size: 1.5rem;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper .inputField button {
+        font-size: 1.5rem;
     }
 
 }

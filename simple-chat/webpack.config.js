@@ -63,6 +63,9 @@ module.exports = {
     stats: {
         children: true
     },
+    devServer: {
+        port: 4200
+    },
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "src/static")

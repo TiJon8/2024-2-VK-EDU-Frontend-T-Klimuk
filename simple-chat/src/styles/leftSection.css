@@ -1,0 +1,278 @@
+.container .leftSide {
+    position: relative;
+    flex: 30%;
+    display: flex;
+    flex-direction: column;
+    border-right: .06rem solid rgba(230, 230, 230, 0.2);
+    min-width: 24rem;
+}
+
+.container .leftSide .header {
+    position: relative;
+    width: 100%;
+    flex: 7%;
+    background-color: var(--headerColor);
+    box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.26);
+}
+
+.container .leftSide .header .searchSection {
+    width: 100%;
+    padding: 1rem 1.4rem;
+}
+
+.container .leftSide .header .searchSection input::-webkit-input-placeholder {
+    color: aliceblue;
+    opacity: .4;
+}
+
+.container .leftSide .header .searchSection input {
+    width: 100%;
+    height: 4rem;
+    border: none;
+    border-radius: 2rem;
+    padding: 0 2rem;
+    background-color: #6a6a6a;
+    color: aliceblue;
+}
+
+.container .leftSide .chatList {
+    flex: 93%;
+    width: 100%;
+    background-color: var(--white-theme);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .leftSide .chatList .block {
+    position: relative;
+    width: 100%;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    padding: 1rem 1rem;
+    gap: 1rem;
+    transition: all 200ms ease;
+}
+
+.container .leftSide .chatList .block:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.15); /* Цвет фона */
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 140ms cubic-bezier(0.55, 0.15, 0.2, 0.86);
+    /* z-index: -1; За содержимым */
+}
+
+.container .leftSide .chatList .block.clicked:before {
+    transform: scaleX(1); /* Расширяется в обе стороны */
+}
+
+
+.container .leftSide .chatList .block.active {
+    background-color: rgba(210, 210, 210, 0.6);
+}
+
+.container .leftSide .chatList .block:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.container .leftSide .chatList .block:hover .messageP b {
+    background-color: #7a7a7a;
+}
+
+.container .leftSide .chatList .block .imgbx {
+    position: relative;
+    max-width: 5rem;
+    height: 5rem;
+    overflow: hidden;
+    border-radius: 50%;
+    aspect-ratio: 2;
+}
+
+.container .leftSide .chatList .block .imgbx img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.container .leftSide .chatList .block .details {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.container .leftSide .chatList .block .details .listHead {
+    display: flex;
+    justify-content: space-between; 
+}
+
+.container .leftSide .chatList .block .details .listHead .messageStatus {
+    display: flex;
+    align-items: center;
+}
+
+.container .leftSide .chatList .block .details .listHead .messageStatus .checkStatus {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .leftSide .chatList .block .details .listHead .messageStatus .checkStatus span {
+    font-size: 1.8rem;
+    color: #5e5e5e;
+}
+
+.container .leftSide .chatList .block .details .listHead h4 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: black;
+}
+
+.container .leftSide .chatList .block .details .listHead .messageStatus .time {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #363636;
+    /* color: rgb(50, 50, 50); */
+}
+
+.messageP {
+    display: flex;
+    gap: .6rem;
+    align-items: center;
+}
+
+.messageP .thumbMediaPreview {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 20%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.messageP .thumbMediaPreview img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.messageP p {
+    color: #aaa;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    font-size: 1.4rem;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding-right: .2rem;
+    text-overflow: ellipsis;
+}
+
+.messageP b {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: antiquewhite;
+    max-height: 2rem;
+    max-width: 2rem;
+    background-color: rgb(170, 170, 162);
+    border-radius: 50%;
+    padding: .9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.container .leftSide .configSide {
+    flex: 8%;
+    max-height: 8%;
+    border-top: .1rem solid rgba(120, 120, 120, 0.5);
+    background-color: var(--white-theme);
+}
+
+.container .leftSide .configSide .navigation_Panel {
+    width: 100%;
+    height: 100%;
+    padding: .6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.container .leftSide .configSide .navigation_Panel .add_Navigation {
+    height: 90%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 200ms ease, transform 280ms ease-in-out;
+    transform: rotate(0deg);
+}
+
+.container .leftSide .configSide .navigation_Panel .add_Navigation:hover {
+    background-color: var(--hoverManipulationBG);
+    transform: rotate(-80deg) scale(1.1);
+    /* animation: spinAddNav 2000ms ease 1 forwards; */
+}
+
+.container .leftSide .configSide .navigation_Panel .add_Navigation:hover span {
+    color: rgb(130, 130, 130);
+}
+
+.container .leftSide .configSide .navigation_Panel .add_Navigation:active span {
+    color: var(--activeManipulationIcons);
+    transform: scale(.82);
+}
+
+.container .leftSide .configSide .navigation_Panel .add_Navigation span {
+    font-size: 3rem;
+    color: gray;
+    font-variation-settings: 'wght' 200;
+    transition: all 200ms ease;
+}
+
+
+@keyframes spinAddNav {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(-150deg);
+    }
+}
+
+
+.container .leftSide .configSide .navigation_Panel .user_Navigation {
+    height: 90%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .leftSide .configSide .navigation_Panel .user_Navigation:hover {
+    background-color: var(--hoverManipulationBG);
+}
+
+.container .leftSide .configSide .navigation_Panel .user_Navigation:active span {
+    color: var(--activeManipulationIcons);
+}
+
+.container .leftSide .configSide .navigation_Panel .user_Navigation span {
+    font-size: 3rem;
+    color: gray;
+    transition: color 200ms ease;
+}

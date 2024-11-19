@@ -1,0 +1,131 @@
+/* медиа */
+
+
+@media screen and (max-width: 425px) {
+    .container {
+        overflow-x: clip;
+        transition: transform 1s ease;
+    }
+
+    .container .leftSide {
+        z-index: 5;
+        /* flex: 100%; */
+        min-width: 100%;
+        flex-shrink: 0;
+    }
+
+    .messageP {
+        gap: .4rem;
+    }
+
+    .container .rightSide {
+        /* flex: 100%; */
+        position: absolute;
+        width: 100%;
+        z-index: 5;
+        transform: translateX(100%);
+        opacity: 0;
+        transition: transform 300ms ease-in-out, opacity 280ms ease;
+    }
+    
+    .container .rightSide.active {
+        /* display: flex; */
+        /* flex: 100%; */
+        /* flex-shrink: 0; */
+        /* position: absolute; */
+        opacity: 1;
+        width: 100%;
+        z-index: 10;
+        transform: translateX(0);
+    }
+
+    .container .leftSide .chatList .block {
+        border-bottom: .01rem solid #cfcfcf70;
+    }
+
+    .container .rightSide:has(.active) .leftSide {
+        max-width: 0;
+    }
+
+    .chatBox .chatWrapper {
+        padding: 0 1.4rem;
+    }
+
+    .container .rightSide .chatBox .message .content {
+        max-width: 80%;
+    }
+
+    .message .content .img img {
+        max-height: 50vh;
+    }
+
+    .container .rightSide .chatBox .message .content:has(.img) .img_subData p {
+        padding: .2rem .2rem;
+    }
+
+    .container .rightSide .header .imgText {
+        margin-left: .6rem;
+    }
+
+    /* .container .rightSide .header .imgText > span:active {
+        background-color: aqua;
+    } */
+
+    .container .rightSide .header .imgText .backArrow {
+        width: 3.4rem;
+        height: 3.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        transition: all 140ms ease;
+    }
+
+
+    .container .rightSide .header .imgText .backArrow span {
+        font-size: 2rem;
+        color: aliceblue;
+    }
+
+    .container .rightSide .header .imgText .backArrow:active {
+        background-color: rgb(110 110 110 / 80%);
+    }
+
+
+    .container .rightSide .header .imgText .img {
+        margin-left: 0rem;
+    }
+
+    .modalMedia .modalMedia_content .img_wrapper {
+        max-height: 82%;
+    }
+
+    .attachMediaModalContainer {
+        z-index: 10;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper {
+        height: auto;
+        width: 88%;
+        aspect-ratio: 1 / 1;
+        gap: .6rem;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper .imgWrapper {
+        width: 100%;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper .inputField {
+        gap: .6rem;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper .inputField input {
+        padding: .4rem .6rem;
+        font-size: 1.5rem;
+    }
+
+    .attachMediaModalContainer .mediaModalWrapper .inputField button {
+        font-size: 1.5rem;
+    }
+
+}
